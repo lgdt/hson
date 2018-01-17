@@ -152,20 +152,11 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
                 value.append(";" + State.localMoid + "=");
                 break;
             case PMTarget:
-                value.setLength(0);
-                setMeasType(attributes);
-                break;
             case WCEL_Nokia_5_0:
-                value.setLength(0);
-                setMeasType(attributes);
-                break;
-            case CID_Nokia_5_0:
-                value.setLength(0);
-                setMeasType(attributes);
-                break;
             case NE_LNBTS_1_0:
                 value.setLength(0);
                 setMeasType(attributes);
+                measResults.setMeasInfoId(measType);
                 break;
             default:
                 value.setLength(0);
@@ -186,13 +177,13 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
             case PMSetup:
                 break;
             case PMMOResult:
-                publishMeas(measResults);
+//                publishMeas(measResults);
                 break;
             case WCEL_Nokia_5_0:
             case CID_Nokia_5_0:
             case NE_LNBTS_1_0:
             case PMTarget:
-                measResults.setMeasInfoId(measType);
+//                measResults.setMeasInfoId(measType);
                 break;
             case MO:
                 // Adding a value to the measObjectDNs in measResults
@@ -205,6 +196,8 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
                     qName = qName.substring(0,qName.indexOf("_"));
                 }
                 measResults.measurements.put(qName, Double.parseDouble(value.toString()));
+                MeasResults result = new MeasResults(measResults, qName, Double.parseDouble(value.toString()));
+                publishMeas(result);
                 break;
         }
     }

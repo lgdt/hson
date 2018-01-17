@@ -36,6 +36,13 @@ public class MeasResults {
         this.repDuration = 0;
     }
 
+    public MeasResults(MeasResults measResults, String qName, double value) {
+        this(measResults.fileFormat, measResults.measInfoId, measResults.start, measResults.end, measResults.granDuration);
+        this.repDuration = measResults.repDuration;
+        measObjLdn.addAll(measResults.measObjLdn);
+        measurements.put(qName, value);
+    }
+
     public MeasResults clone() {
         MeasResults clone = new MeasResults();
         clone.fileFormat = this.fileFormat;

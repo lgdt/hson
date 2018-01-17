@@ -20,13 +20,14 @@ public class NokiaPmXmlParserTest {
     private int measCount = 0;
 
     @Test
-    public void parserNokiaLTETest() throws URISyntaxException, IOException, ParserException {
-        String TEST_NOKIA_LTE_OMES_FILE = "C:/git/hson/parsers/nokiaxml/src/test/resources/cson_WCEL_20170213070801_2009694.xml.gz";
-        int NOKIA_LTE_CNT = 55;
-        int NOKIA_COUNTER_CNT = 734;
+    public void parserNokiaTest() throws URISyntaxException, IOException, ParserException {
+        String TEST_NOKIA_OMES_FILE = "C:/git/hson/parsers/nokiaxml/src/test/resources/cson_WCEL_20170213070801_2009694.xml.gz";
+        int nokiaCellCount = 55;
+        int nokiaCountersCount = 734;
+        int eventCount = nokiaCellCount * nokiaCountersCount;
 
-        URI testURI = new URI(TEST_NOKIA_LTE_OMES_FILE);
-        InputStream fileInputStream = new GZIPInputStream(new FileInputStream(TEST_NOKIA_LTE_OMES_FILE));
+        URI testURI = new URI(TEST_NOKIA_OMES_FILE);
+        InputStream fileInputStream = new GZIPInputStream(new FileInputStream(TEST_NOKIA_OMES_FILE));
 
         NokiaPMXmlParser parser =  new NokiaPMXmlParser();
 
@@ -37,7 +38,6 @@ public class NokiaPmXmlParserTest {
         });
         parser.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         parser.parse(testURI, fileInputStream);
-        assertEquals(NOKIA_LTE_CNT,measCount);
-        assertEquals(NOKIA_COUNTER_CNT, measResultsCnt);
+        assertEquals(eventCount,measCount);
     }
 }
