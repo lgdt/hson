@@ -1,0 +1,15 @@
+package com.cellwize.hson.parsers;
+
+/**
+ * Created by max on 18/11/2014.
+ */
+public class ParserException extends Exception
+{
+    public ParserException(String message) {
+        super(message);
+    }
+
+    public ParserException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
