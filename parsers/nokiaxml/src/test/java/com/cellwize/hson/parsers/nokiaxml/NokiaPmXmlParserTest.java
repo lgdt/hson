@@ -21,9 +21,9 @@ public class NokiaPmXmlParserTest {
 
     @Test
     public void parserNokiaTest() throws URISyntaxException, IOException, ParserException {
-        String TEST_NOKIA_OMES_FILE = "C:/git/hson/parsers/nokiaxml/src/test/resources/cson_WCEL_20170213070801_2009694.xml.gz";
-        int nokiaCellCount = 55;
-        int nokiaCountersCount = 734;
+        String TEST_NOKIA_OMES_FILE = "C:/git/hson/parsers/nokiaxml/src/test/resources/cson_WCEL_20170213072357_1103782.xml.gz";
+        int nokiaCellCount = 244;
+        int nokiaCountersCount = 373;
         int eventCount = nokiaCellCount * nokiaCountersCount;
 
         URI testURI = new URI(TEST_NOKIA_OMES_FILE);
