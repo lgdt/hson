@@ -9,7 +9,7 @@ public class KafkaProperties extends Properties {
     public KafkaProperties() {
         super();
         put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"192.168.132.163:9092");
-        put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.ByteArraySerializer");
+        put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.StringSerializer");
         put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.connect.json.JsonSerializer");
 
     }

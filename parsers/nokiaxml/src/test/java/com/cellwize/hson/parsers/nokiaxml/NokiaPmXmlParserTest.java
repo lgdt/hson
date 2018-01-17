@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 public class NokiaPmXmlParserTest {
 
-    private int measResultsCnt;
     private int measCount = 0;
 
     @Test
@@ -33,8 +32,9 @@ public class NokiaPmXmlParserTest {
 
         parser.setResultHandler(o -> {
             MeasResults measResults = (MeasResults) o;
-            measResultsCnt = measResults.getMeasurements().size();
+            measResults.getMeasurements().size();
             measCount++;
+            return null;
         });
         parser.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         parser.parse(testURI, fileInputStream);

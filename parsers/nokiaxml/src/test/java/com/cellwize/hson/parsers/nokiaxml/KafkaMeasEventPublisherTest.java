@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Date;
+import java.util.concurrent.Future;
 
 public class KafkaMeasEventPublisherTest {
 
@@ -17,7 +18,7 @@ public class KafkaMeasEventPublisherTest {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         KafkaMeasEventPublisher kafkaMeasEventPublisher = context.getBean("kafkaMeasEventPublisher", KafkaMeasEventPublisher.class);
         MeasResults results = createResult();
-        kafkaMeasEventPublisher.publishEvent(results);
+        Future future = kafkaMeasEventPublisher.publishEvent(results);
     }
 
     private MeasResults createResult() {
