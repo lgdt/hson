@@ -6,6 +6,7 @@ import com.cellwize.hson.parsers.Parser;
 import com.cellwize.hson.parsers.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -26,7 +27,7 @@ import java.util.*;
  * parse method will be invoked by the AcquisitionTasklet and
  *
  */
-
+@Component
 public class NokiaPMXmlParser extends DefaultHandler implements Parser {
 
     private Logger logger = LoggerFactory.getLogger(NokiaPMXmlParser.class);
@@ -63,7 +64,8 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
         }
     }
 
-    public NokiaPMXmlParser() {
+    public NokiaPMXmlParser(String dateFormat) {
+        this.dateFormat = dateFormat;
         currentState = new Stack<>();
     }
 
@@ -85,7 +87,6 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
      *******************************************************/
     public void parse(URI uri, InputStream inputStream) throws ParserException {
         try {
-            //dataSet = getDataSetFromURI(uri);
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
             // Sets the reader to ignore the external DTD completely
             xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);

@@ -20,7 +20,7 @@ public class KafkaMeasEventPublisher implements EventPublisher<MeasResults> {
         JsonNode jsonNode = objectMapper.valueToTree(measResults);
         ProducerRecord<String, JsonNode> rec = new ProducerRecord<>(TOPIC_NAME, jsonNode);
         Future future = kafkaHSonProducer.send(rec);
-        kafkaHSonProducer.close();
+//        kafkaHSonProducer.close();
         return future;
     }
 }

@@ -1,10 +1,8 @@
-package com.cellwize.hson.parsers.nokiaxml;
+package com.cellwize.hson.hsonmain;
 
-import com.cellwize.hson.eventbroker.api.AppConfig;
 import com.cellwize.hson.eventbroker.api.KafkaMeasEventPublisher;
 import com.cellwize.hson.eventbroker.api.MeasResults;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

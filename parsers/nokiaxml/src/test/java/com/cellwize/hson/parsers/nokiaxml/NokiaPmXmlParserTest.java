@@ -28,7 +28,7 @@ public class NokiaPmXmlParserTest {
         URI testURI = new URI(TEST_NOKIA_OMES_FILE);
         InputStream fileInputStream = new GZIPInputStream(new FileInputStream(TEST_NOKIA_OMES_FILE));
 
-        NokiaPMXmlParser parser =  new NokiaPMXmlParser();
+        NokiaPMXmlParser parser =  new NokiaPMXmlParser("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
         parser.setResultHandler(o -> {
             MeasResults measResults = (MeasResults) o;
@@ -36,7 +36,6 @@ public class NokiaPmXmlParserTest {
             measCount++;
             return null;
         });
-        parser.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         parser.parse(testURI, fileInputStream);
         assertEquals(eventCount,measCount);
     }
