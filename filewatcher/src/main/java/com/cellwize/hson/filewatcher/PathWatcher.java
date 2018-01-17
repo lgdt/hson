@@ -54,16 +54,24 @@ public class PathWatcher {
                         Path newPath =  dir.resolve(((WatchEvent<Path>) watchEvent).context());
                         Thread.sleep(1000);
                         // Output
-                        NokiaPMXmlParser nokiaPMXmlParser = new NokiaPMXmlParser("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-                        nokiaPMXmlParser.setResultHandler(publisher);
-                        nokiaPMXmlParser.parse(newPath.toUri(), new GZIPInputStream(new FileInputStream(newPath.toFile())));
+                        Thread thread = new Thread(() -> {
+                            NokiaPMXmlParser nokiaPMXmlParser = new NokiaPMXmlParser("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+                            nokiaPMXmlParser.setResultHandler(publisher);
+                            try {
+                                nokiaPMXmlParser.parse(newPath.toUri(), new GZIPInputStream(new FileInputStream(newPath.toFile())));
+                            } catch (ParserException | IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        });
+                        thread.start();
                     }
                 }
                 if (!key.reset()) {
                     break; // loop
                 }
             }
-        } catch (IOException | InterruptedException | ParserException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
