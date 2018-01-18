@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.WatchEvent.Kind;
-import java.util.zip.GZIPInputStream;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
@@ -58,7 +57,7 @@ public class PathWatcher {
                             NokiaPMXmlParser nokiaPMXmlParser = new NokiaPMXmlParser("yyyy-MM-dd'T'HH:mm:ss.SSSX");
                             nokiaPMXmlParser.setResultHandler(publisher);
                             try {
-                                nokiaPMXmlParser.parse(newPath.toUri(), new GZIPInputStream(new FileInputStream(newPath.toFile())));
+                                nokiaPMXmlParser.parse(newPath.toUri(), new FileInputStream(newPath.toFile()));
                             } catch (ParserException | IOException e) {
                                 e.printStackTrace();
                             }

@@ -1,5 +1,6 @@
 package com.cellwize.hson.eventbroker.api;
 
+import com.cellwize.hson.results.MeasResults;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,8 +20,6 @@ public class KafkaMeasEventPublisher implements EventPublisher<MeasResults> {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.valueToTree(measResults);
         ProducerRecord<String, JsonNode> rec = new ProducerRecord<>(TOPIC_NAME, jsonNode);
-        Future future = kafkaHSonProducer.send(rec);
-//        kafkaHSonProducer.close();
-        return future;
+        return kafkaHSonProducer.send(rec);
     }
 }

@@ -1,9 +1,9 @@
 package com.cellwize.hson.parsers.nokiaxml;
 
 import com.cellwize.hson.eventbroker.api.EventPublisher;
-import com.cellwize.hson.eventbroker.api.MeasResults;
 import com.cellwize.hson.parsers.Parser;
 import com.cellwize.hson.parsers.ParserException;
+import com.cellwize.hson.results.MeasResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -196,7 +196,6 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
                 if (qName.contains("_")) {
                     qName = qName.substring(0,qName.indexOf("_"));
                 }
-                measResults.measurements.put(qName, Double.parseDouble(value.toString()));
                 MeasResults result = new MeasResults(measResults, qName, Double.parseDouble(value.toString()));
                 publishMeas(result);
                 break;
@@ -205,7 +204,7 @@ public class NokiaPMXmlParser extends DefaultHandler implements Parser {
 
     private void publishMeas(MeasResults measResults) {
         if(measResults != null){
-            if(measResults.getMeasInfoId() != null && measResults.getMeasObjLdn().size() > 0 && measResults.getMeasurements().size() > 0){
+            if(measResults.getMeasInfoId() != null && measResults.getMeasObjLdn().size() > 0 && measResults.getCounterName() != null){
                 eventPublisher.publishEvent(measResults);
             }
         }

@@ -1,7 +1,7 @@
 package com.cellwize.hson.hsonmain;
 
 import com.cellwize.hson.eventbroker.api.KafkaMeasEventPublisher;
-import com.cellwize.hson.eventbroker.api.MeasResults;
+import com.cellwize.hson.results.MeasResults;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -23,7 +23,7 @@ public class KafkaMeasEventPublisherTest {
         MeasResults results = new MeasResults("OMES", "Cell_Resource", new Date(), new Date(), 60);
         results.measObjLdn.add("PLMN-PLMN/RNC-2013/WBTS-14339/WCEL-44463");
         results.measObjLdn.add("PLMN-PLMN/MCC-262/MNC-3");
-        results.measurements.put("M1000C0", 65.0);
+        results.setCounter("M1000C0", 65.0);
         return results;
     }
 }
