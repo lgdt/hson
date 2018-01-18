@@ -1,4 +1,4 @@
-package com.cellwize.hson.eventbroker.api;
+package com.cellwize.hson.results;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,13 +16,13 @@ public class MeasResults {
     public Date end;
     public int granDuration;
     public int repDuration;
-    public ArrayList<String> measObjLdn; // details of the network element to which the measurements refer
-    public Map<String, Double> measurements; // counterName, counterValue
+    public ArrayList<String> measObjLdn;
+    public String counterName;
+    public Double counterValue;
     // In Ericsson PM files, counter value may contain multiple values.
     // In such cases we are storing the with counter name = counterName[i]
 
     public MeasResults() {
-        measurements = new TreeMap<>();
         measObjLdn = new ArrayList<>();
     }
 
@@ -40,30 +40,8 @@ public class MeasResults {
         this(measResults.fileFormat, measResults.measInfoId, measResults.start, measResults.end, measResults.granDuration);
         this.repDuration = measResults.repDuration;
         measObjLdn.addAll(measResults.measObjLdn);
-        measurements.put(qName, value);
-    }
-
-    public MeasResults clone() {
-        MeasResults clone = new MeasResults();
-        clone.fileFormat = this.fileFormat;
-        clone.measInfoId = this.measInfoId;
-        clone.measObjLdn = this.measObjLdn;
-        clone.start = this.start;
-        clone.end = this.end;
-        clone.granDuration = this.granDuration;
-        clone.repDuration = this.repDuration;
-        return clone;
-    }
-
-    public void clear() {
-        this.fileFormat = null;
-        this.measInfoId = null;
-        this.start = null;
-        this.end = null;
-        this.granDuration = 0;
-        this.repDuration = 0;
-        measObjLdn.clear();
-        measurements.clear();
+        counterName = qName;
+        counterValue = value;
     }
 
     @Override
@@ -76,7 +54,8 @@ public class MeasResults {
                 ", granDuration=" + granDuration +
                 ", repDuration=" + repDuration +
                 ", measObjLdn=" + measObjLdn +
-                ", measurements=" + measurements +
+                ", counterName=" + counterName +
+                ", counterValue=" + counterValue +
                 '}';
     }
 
@@ -100,12 +79,17 @@ public class MeasResults {
         return fileFormat;
     }
 
-    public Map<String, Double> getMeasurements() {
-        return measurements;
+    public String getCounterName() {
+        return counterName;
     }
 
-    public void setMeasurements(Map<String, Double> measurements) {
-        this.measurements = measurements;
+    public void setCounter(String counterName, Double counterValue) {
+        this.counterName = counterName;
+        this.counterValue = counterValue;
+    }
+
+    public Double getCounterValue() {
+        return counterValue;
     }
 
     public Date getStart() {
@@ -122,10 +106,6 @@ public class MeasResults {
 
     public void setEnd(Date end) {
         this.end = end;
-    }
-
-    public void addMeasurement(String counterName, Double counterVal) {
-        getMeasurements().put(counterName, counterVal);
     }
 
     public int getGranDuration() {

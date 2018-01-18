@@ -1,6 +1,5 @@
 package com.cellwize.hson.parsers.nokiaxml;
 
-import com.cellwize.hson.eventbroker.api.MeasResults;
 import com.cellwize.hson.parsers.ParserException;
 
 import java.io.FileInputStream;
@@ -10,9 +9,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.zip.GZIPInputStream;
 
+import com.cellwize.hson.results.MeasResults;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class NokiaPmXmlParserTest {
 
@@ -32,7 +33,8 @@ public class NokiaPmXmlParserTest {
 
         parser.setResultHandler(o -> {
             MeasResults measResults = (MeasResults) o;
-            measResults.getMeasurements().size();
+            assertNotNull(measResults.getCounterName());
+            assertNotNull(measResults.getCounterValue());
             measCount++;
             return null;
         });

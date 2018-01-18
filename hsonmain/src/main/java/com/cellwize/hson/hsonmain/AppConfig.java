@@ -4,7 +4,6 @@ import com.cellwize.hson.eventbroker.api.KafkaHSonProducer;
 import com.cellwize.hson.eventbroker.api.KafkaMeasEventPublisher;
 import com.cellwize.hson.eventbroker.api.KafkaProperties;
 import com.cellwize.hson.filewatcher.PathWatcher;
-import com.cellwize.hson.parsers.nokiaxml.NokiaPMXmlParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
