@@ -1,7 +1,5 @@
 package com.cellwize.hson.kpicalc;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +11,8 @@ public class KpiVal {
     private List<Float> counterValues;
 
     private Float value;
+
+    private boolean valid = false;
 
     public KpiVal() {
     }
@@ -60,10 +60,25 @@ public class KpiVal {
         this.value = value;
     }
 
-    @Transient
-    public boolean isValid() {
-        return kpiType.getCounterNames().size() == counterValues.stream()
+    public void checkValid() {
+        setValid(kpiType.getCounterNames().size() == counterValues.stream()
                 .filter(Objects::nonNull)
-                .count();
+                .count());
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public List<Float> getCounterValues() {
+        return counterValues;
+    }
+
+    public void setCounterValues(List<Float> counterValues) {
+        this.counterValues = counterValues;
     }
 }

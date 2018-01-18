@@ -10,9 +10,9 @@ public class JsonTimestampExtractor implements TimestampExtractor {
     public long extract(ConsumerRecord<Object, Object> record, long previousTimestamp) {
         if (record.value() instanceof JsonNode) {
             JsonNode node = ((JsonNode) record.value()).get("end");
-            return node != null ? node.longValue() : System.currentTimeMillis();
+            return node != null ? node.longValue() : record.timestamp();
         }
 
-        throw new IllegalArgumentException("JsonTimestampExtractor cannot recognize the record value " + record.value());
+        return record.timestamp();
     }
 }

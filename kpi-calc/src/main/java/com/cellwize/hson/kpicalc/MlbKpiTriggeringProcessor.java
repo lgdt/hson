@@ -15,7 +15,6 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
-import org.apache.kafka.streams.processor.AbstractProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +39,6 @@ public class MlbKpiTriggeringProcessor {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, JsonTimestampExtractor.class);
 
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-
-
         StreamsBuilder builder = new StreamsBuilder();
 
         Map<String, Object> serdeProps = new HashMap<>();
@@ -60,9 +55,10 @@ public class MlbKpiTriggeringProcessor {
 
         final Consumed<String, JsonNode> consumed = Consumed.with(Serdes.String(), jsonSerde);
         KStream<String, JsonNode> source = builder.stream("counters", consumed);
-        source
-                .selectKey((key, value) -> value.get("measObjLdn").textValue())
+        
+        source.selectKey((key, value) -> value.get("measObjLdn").textValue())
                 .groupByKey(Serialized.with(Serdes.String(), jsonSerde))
+                //.windowedBy(TimeWindows.of(1000 * 60 * 15))
                 .aggregate(
                         new Initializer<CellKpi>() {
                             @Override
@@ -83,13 +79,18 @@ public class MlbKpiTriggeringProcessor {
                                     val = new KpiVal(KpiType.KPI_DL_CODE_R99_UTIL);
                                 }
                                 val.setCounterValue(counterName, meas);
+                                val.checkValid();
 
                                 aggregate.setKpiVal(val);
+
+                                if (val.isValid()) {
+                                    val.setValue(new SpelBasedKpiCalculator().calcKpi(val));
+                                }
 
                                 return aggregate;
                             }
                         }, Materialized.with(Serdes.String(), cellKpiSerde))
-                .filter((key, value) -> value.getKpiVal().isValid())
+                //.filter((key, value) -> value.getKpiVal().isValid())
                 .toStream().to("hson-streams-output-kpi", Produced.with(Serdes.String(), cellKpiSerde));
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), props);
@@ -105,6 +106,7 @@ public class MlbKpiTriggeringProcessor {
         });
 
         try {
+            streams.cleanUp();
             streams.start();
             latch.await();
         } catch (Throwable e) {
